@@ -8,13 +8,15 @@ def main():
     #     sys.exit(1)
 
 #-------Loader
-    filepath = sys.argv[1]
+    #filepath = sys.argv[1]
+    filepath = './datasets/dataset_train.csv'
     dataset = load_csv(filepath)
-    #Astronomy vs Divination ok
+    
+    #Defense Against the Dark Arts vs Astronomy ok
     #feat1 = sys.argv[2]
     #feat2 = sys.argv[3]
-    feat1 = "Astronomy"
-    feat2 = "Potions"
+    feat1 = "Flying"
+    feat2 = "Divination"
 #-----------------
 
     data_house = get_xy_house(filepath, dataset, feat1, feat2)

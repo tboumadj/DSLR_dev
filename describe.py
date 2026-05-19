@@ -4,11 +4,12 @@ from utils.stats import describe_feature, print_describe
 from utils.test.test import pandas_feature
 
 def main():
-    if len(sys.argv) != 2:
-        print("\033[33m#### ---> Python describe.py datasets/dataset_train.csv ####\033[0m")
-        sys.exit(1)
+    #if len(sys.argv) != 2:
+    #    print("\033[33m#### ---> Python describe.py datasets/dataset_train.csv ####\033[0m")
+    #    sys.exit(1)
 
-    filepath = sys.argv[1]
+    #filepath = sys.argv[1]
+    filepath = './datasets/dataset_train.csv'
     dataset = load_csv(filepath)
 
     print("\033[32m#### All file column: ####\033[0m")

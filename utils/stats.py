@@ -139,7 +139,7 @@ def print_describe(stats_by_feature):
 def print_graph_scatter(data_house, feat1, feat2):
     # Matplotlib
     print("\033[33m#### Matplot Test: ####\033[0m")    
-    plt.figure(figsize=(12, 7))
+    plt.figure(figsize=(20, 12))
 
     all_x, all_y = [], []
     
