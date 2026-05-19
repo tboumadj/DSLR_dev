@@ -123,7 +123,7 @@ def print_describe(stats_by_feature):
 
 def print_graph_scatter(data_house, feat1, feat2):
     # Matplotlib
-    print("\033[33m#### Matplot Test: ####\033[0m")    
+    print("\033[33m#### Matplot Graph ####\033[0m")    
     plt.figure(figsize=(20, 12))
     
     for house, (x, y) in data_house.items():
@@ -165,7 +165,7 @@ def find_correlation(dataset, numeric_cols):
     # Tri par corrélation décroissante
     results.sort(reverse=True)
 
-    print(f"\n{'r':>8}  {'col_x':<35} {'col_y'}")
+    print(f"\n{'r':>8}  {'feat1':<35} {'feat2'}")
     print('-' * 75)
     for _, r, cx, cy in results[:10]:   # top 10
         print(f"{r:>8.4f}  {cx:<35} {cy}")
@@ -214,6 +214,7 @@ def print_graph_test(data_house, feat1, feat2):
             color='black',
             linewidth=1.5,
             linestyle='--')
+    
     #-----------
     plt.xlabel(feat1)
     plt.ylabel(feat2)

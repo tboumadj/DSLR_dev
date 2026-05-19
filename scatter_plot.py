@@ -12,22 +12,23 @@ def main():
     filepath = './datasets/dataset_train.csv'
     dataset = load_csv(filepath)
     
-    #Defense Against the Dark Arts vs Astronomy ok
+    #Astronomy VS Defense Against the Dark Arts - ok
     #feat1 = sys.argv[2]
     #feat2 = sys.argv[3]
-    feat1 = "Defense Against the Dark Arts"
-    feat2 = "Astronomy"
+    feat1 = "Muggle Studies"
+    feat2 = "Charms"
 #-----------------
 
     data_house = get_xy_house(filepath, dataset, feat1, feat2)
 
-    #test corellation
+    #print_graph_scatter(data_house, feat1, feat2)
+
+    #--------test corellation
     EXCLUDE_COLS = ['Index']
     numeric_cols = [col for col, vals in dataset.items() if is_numeric_column(vals) and col not in EXCLUDE_COLS]
     find_correlation(dataset, numeric_cols)
-
-    #print_graph_scatter(data_house, feat1, feat2)
     print_graph_test(data_house, feat1, feat2)
+
 
 
 if __name__ == '__main__':
