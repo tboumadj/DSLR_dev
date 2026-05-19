@@ -15,14 +15,13 @@ def main():
     #Defense Against the Dark Arts vs Astronomy ok
     #feat1 = sys.argv[2]
     #feat2 = sys.argv[3]
-    feat1 = "Flying"
-    feat2 = "Divination"
+    feat1 = "Defense Against the Dark Arts"
+    feat2 = "Astronomy"
 #-----------------
 
     data_house = get_xy_house(filepath, dataset, feat1, feat2)
 
     #print_graph_scatter(data_house, feat1, feat2)
-    #Printer + Covariance
     print_graph_test(data_house, feat1, feat2)
 
 

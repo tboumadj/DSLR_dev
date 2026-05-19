@@ -149,13 +149,17 @@ def linear_regression(x, y):
     mean_y = sum(y) / n
 
     cov    = sum((xi - mean_x) * (yi - mean_y) for xi, yi in zip(x, y))
+    print(f'cov: {cov}')
     var_x  = sum((xi - mean_x) ** 2 for xi in x)
+    print(f'var_x: {var_x}')
 
     if var_x == 0:
         return 0, mean_y
 
     a = cov / var_x
+    print(f'a: {a}')
     b = mean_y - a * mean_x
+    print(f'b: {b}')
     return a, b
 
 def print_graph_test(data_house, feat1, feat2):
