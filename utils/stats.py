@@ -167,7 +167,7 @@ def find_correlation(dataset, numeric_cols):
 
     print(f"\n{'r':>8}  {'feat1':<35} {'feat2'}")
     print('-' * 75)
-    for _, r, cx, cy in results[:50]: 
+    for _, r, cx, cy in results[:40]: 
         print(f"{r:>8.4f}  {cx:<35} {cy}")
 
 
@@ -190,8 +190,8 @@ def linear_regression(x, y):
 
 def print_graph_test(data_house, feat1, feat2):
     # Matplotlib
-    print("\033[33m#### Matplot Graph ####\033[0m")    
-    plt.figure(figsize=(20, 12))
+    print("\033[33m#### Matplot Graph ####\033[0m")
+    plt.figure(figsize=(20, 12), dpi=120)
 
     all_x, all_y = [], []
     
@@ -200,8 +200,8 @@ def print_graph_test(data_house, feat1, feat2):
         plt.scatter(x, y,
                     label=f'{house} ({len(x)})',
                     color=color,
-                    s=12,
-                    alpha=0.6)
+                    s=18,
+                    alpha=0.55)
 
     #Covariance logic 
     all_x.extend(x)
