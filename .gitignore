@@ -1,3 +1,13 @@
-/utils/__pycache__/*
-/utils/test/__pycache__/*
-/datasets/.~lock*
+#Cache
+utils/__pycache__
+
+__pycache__/
+*.py
+*.pyc
+
+/*/__pycache__/
+*.py
+*.pyc
+
+/*/*/__pycache__/
+*.py*.pyc
