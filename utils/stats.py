@@ -167,7 +167,7 @@ def find_correlation(dataset, numeric_cols):
 
     print(f"\n{'r':>8}  {'feat1':<35} {'feat2'}")
     print('-' * 75)
-    for _, r, cx, cy in results[:10]:   # top 10
+    for _, r, cx, cy in results[:50]: 
         print(f"{r:>8.4f}  {cx:<35} {cy}")
 
 

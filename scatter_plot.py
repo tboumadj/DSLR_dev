@@ -15,8 +15,8 @@ def main():
     #Astronomy VS Defense Against the Dark Arts - ok
     #feat1 = sys.argv[2]
     #feat2 = sys.argv[3]
-    feat1 = "Muggle Studies"
-    feat2 = "Charms"
+    feat1 = "Divination"
+    feat2 = "History of Magic"
 #-----------------
 
     data_house = get_xy_house(filepath, dataset, feat1, feat2)
