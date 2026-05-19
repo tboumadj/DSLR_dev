@@ -1,6 +1,7 @@
 import sys
 from utils.load import load_csv, get_xy, get_xy_house, is_numeric_column
-from utils.stats import print_graph_scatter, print_graph_test, find_correlation
+from utils.stats import print_graph_scatter
+from utils.test.test import print_graph_test, find_correlation
 
 def main():
     # if len(sys.argv) != 4:
@@ -15,8 +16,8 @@ def main():
     #Astronomy VS Defense Against the Dark Arts - ok
     #feat1 = sys.argv[2]
     #feat2 = sys.argv[3]
-    feat1 = "Arithmancy"
-    feat2 = "Potions"
+    feat1 = "Astronomy"
+    feat2 = "History of Magic"
 #-----------------
 
     data_house = get_xy_house(filepath, dataset, feat1, feat2)
@@ -28,7 +29,7 @@ def main():
     numeric_cols = [col for col, vals in dataset.items() if is_numeric_column(vals) and col not in EXCLUDE_COLS]
     find_correlation(dataset, numeric_cols)
     print_graph_test(data_house, feat1, feat2)
-
+    #-----------------
 
 
 if __name__ == '__main__':
