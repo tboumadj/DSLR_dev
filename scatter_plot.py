@@ -1,6 +1,6 @@
 import sys
-from utils.load import load_csv, get_xy, get_xy_house
-from utils.stats import print_graph_scatter, print_graph_test
+from utils.load import load_csv, get_xy, get_xy_house, is_numeric_column
+from utils.stats import print_graph_scatter, print_graph_test, find_correlation
 
 def main():
     # if len(sys.argv) != 4:
@@ -20,6 +20,11 @@ def main():
 #-----------------
 
     data_house = get_xy_house(filepath, dataset, feat1, feat2)
+
+    #test corellation
+    EXCLUDE_COLS = ['Index']
+    numeric_cols = [col for col, vals in dataset.items() if is_numeric_column(vals) and col not in EXCLUDE_COLS]
+    find_correlation(dataset, numeric_cols)
 
     #print_graph_scatter(data_house, feat1, feat2)
     print_graph_test(data_house, feat1, feat2)

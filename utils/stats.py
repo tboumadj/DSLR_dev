@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from utils.load import get_xy
 
 HOUSE_COLORS = {
     'Gryffindor': '#C84B31',
@@ -142,6 +143,34 @@ def print_graph_scatter(data_house, feat1, feat2):
     plt.show()
 
 #-----------------------Test Linear + cov
+def find_correlation(dataset, numeric_cols):
+    import itertools
+
+    results = []
+    for col_x, col_y in itertools.combinations(numeric_cols, 2):
+        x, y = get_xy(dataset, col_x, col_y)
+        if len(x) < 2:
+            continue
+
+        a, b     = linear_regression(x, y)
+        mean_x   = sum(x) / len(x)
+        mean_y   = sum(y) / len(y)
+        cov      = sum((xi - mean_x) * (yi - mean_y) for xi, yi in zip(x, y))
+        std_x    = (sum((xi - mean_x) ** 2 for xi in x) / (len(x) - 1)) ** 0.5
+        std_y    = (sum((yi - mean_y) ** 2 for yi in y) / (len(y) - 1)) ** 0.5
+
+        r = cov / ((len(x) - 1) * std_x * std_y) if std_x and std_y else 0
+        results.append((abs(r), r, col_x, col_y))
+
+    # Tri par corrélation décroissante
+    results.sort(reverse=True)
+
+    print(f"\n{'r':>8}  {'col_x':<35} {'col_y'}")
+    print('-' * 75)
+    for _, r, cx, cy in results[:10]:   # top 10
+        print(f"{r:>8.4f}  {cx:<35} {cy}")
+
+
 def linear_regression(x, y):
     n = len(x)
 
@@ -149,22 +178,19 @@ def linear_regression(x, y):
     mean_y = sum(y) / n
 
     cov    = sum((xi - mean_x) * (yi - mean_y) for xi, yi in zip(x, y))
-    print(f'cov: {cov}')
     var_x  = sum((xi - mean_x) ** 2 for xi in x)
-    print(f'var_x: {var_x}')
 
     if var_x == 0:
         return 0, mean_y
 
     a = cov / var_x
-    print(f'a: {a}')
     b = mean_y - a * mean_x
-    print(f'b: {b}')
+
     return a, b
 
 def print_graph_test(data_house, feat1, feat2):
     # Matplotlib
-    print("\033[33m#### Matplot Test: ####\033[0m")    
+    print("\033[33m#### Matplot Graph ####\033[0m")    
     plt.figure(figsize=(20, 12))
 
     all_x, all_y = [], []
