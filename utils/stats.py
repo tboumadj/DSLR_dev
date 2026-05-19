@@ -92,22 +92,6 @@ def describe_feature(column):
         "max":   maximum,
     }
 
-def linear_regression(x, y):
-    n = len(x)
-
-    mean_x = sum(x) / n
-    mean_y = sum(y) / n
-
-    cov    = sum((xi - mean_x) * (yi - mean_y) for xi, yi in zip(x, y))
-    var_x  = sum((xi - mean_x) ** 2 for xi in x)
-
-    if var_x == 0:
-        return 0, mean_y
-
-    a = cov / var_x
-    b = mean_y - a * mean_x
-    return a, b
-
 #--------------Printer
 def print_describe(stats_by_feature):
     row_labels = ["Count", "Mean", "Std", "Min", "25%", "50%", "75%", "Max"]
@@ -137,6 +121,44 @@ def print_describe(stats_by_feature):
         print(row)
 
 def print_graph_scatter(data_house, feat1, feat2):
+    # Matplotlib
+    print("\033[33m#### Matplot Test: ####\033[0m")    
+    plt.figure(figsize=(20, 12))
+    
+    for house, (x, y) in data_house.items():
+        color = HOUSE_COLORS.get(house, 'gray')
+        plt.scatter(x, y,
+                    label=f'{house} ({len(x)})',
+                    color=color,
+                    s=12,
+                    alpha=0.6)
+
+    #-----------
+    plt.xlabel(feat1)
+    plt.ylabel(feat2)
+    plt.title(f'{feat1} vs {feat2}')
+    plt.legend(loc='best')
+    plt.tight_layout()
+    plt.show()
+
+#-----------------------Test Linear + cov
+def linear_regression(x, y):
+    n = len(x)
+
+    mean_x = sum(x) / n
+    mean_y = sum(y) / n
+
+    cov    = sum((xi - mean_x) * (yi - mean_y) for xi, yi in zip(x, y))
+    var_x  = sum((xi - mean_x) ** 2 for xi in x)
+
+    if var_x == 0:
+        return 0, mean_y
+
+    a = cov / var_x
+    b = mean_y - a * mean_x
+    return a, b
+
+def print_graph_test(data_house, feat1, feat2):
     # Matplotlib
     print("\033[33m#### Matplot Test: ####\033[0m")    
     plt.figure(figsize=(20, 12))
