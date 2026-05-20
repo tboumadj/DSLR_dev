@@ -28,7 +28,7 @@ def is_numeric_column(values):
 def get_pairs(dataset, feat1, feat2):
     pairs = []
     for x, y in zip(dataset[feat1], dataset[feat2]):
-        if x == x and y == y:     #Nan != Nan
+        if x == x and y == y:
             pairs.append((x, y))
     return pairs
 

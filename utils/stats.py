@@ -49,7 +49,7 @@ def percentile(sorted_data, p):
     if upper >= n:
         return sorted_data[lower]
 
-    # Interpolation linéaire entre les deux voisins index flottant = (42/100) × (10−1) = 3.780 -> lower = 3  ·  upper = 4  ·  frac = 0.780 -> résultat = data[3] + frac × (data[4] − data[3])
+    # (42/100) × (10−1) = 3.780 -> lower = 3  ·  upper = 4  ·  frac = 0.780 -> résultat = data[3] + frac × (data[4] − data[3])
     return sorted_data[lower] + frac * (sorted_data[upper] - sorted_data[lower])
 
 #-----------------------
