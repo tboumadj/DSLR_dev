@@ -17,7 +17,7 @@ def main():
     #feat1 = sys.argv[2]
     #feat2 = sys.argv[3]
     feat1 = "Astronomy"
-    feat2 = "Defense Against the Dark Arts"
+    feat2 = "Charms"
 #-----------------
 
     data_house = get_xy_house(filepath, dataset, feat1, feat2)
