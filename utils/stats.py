@@ -165,12 +165,19 @@ def print_graph_hist(data_house, feat):
     plt.tight_layout()
     plt.show()
 
-def print_graph_sns(dataframe):
+def print_graph_sns(dataframe, numeric_cols):
     # Matplot & Seaborn
     print("\033[33m#### Matplot & Seaborn Graph Generated ####\033[0m")
 
     plt.style.use('seaborn-v0_8-whitegrid')
-    dataframe = sns.load_dataset("penguins") #Skip After
-    sns.pairplot(dataframe, hue="species", diag_kind="hist")
-
+    #dataframe = sns.load_dataset("penguins") #Skip After
+    sns.pairplot(dataframe, hue="Hogwarts House", 
+                 vars= numeric_cols,
+                 palette=HOUSE_COLORS,
+                 diag_kind="hist",
+                 plot_kws={'s': 8, 'alpha': 0.4},
+                 diag_kws={'alpha': 0.6})
+    
+    plt.suptitle('Pair plot — Hogwarts features', y=1.01, fontsize=14)
+    plt.tight_layout()
     plt.show()

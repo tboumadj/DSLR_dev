@@ -18,8 +18,8 @@ def main():
         col for col, vals in dataset.items()
         if is_numeric_column(vals) and col not in EXCLUDE
     ]
-    dataframe = dataset_to_dataframe(dataset, numeric_cols)
-    print_graph_sns(dataframe)
+    dataframe = dataset_to_dataframe(filepath, numeric_cols)
+    print_graph_sns(dataframe, numeric_cols)
 
 if __name__ == '__main__':
     main()
