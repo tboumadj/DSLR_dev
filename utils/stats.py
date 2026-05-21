@@ -166,10 +166,10 @@ def print_graph_hist(data_house, feat):
     plt.show()
 
 def print_graph_sns(dataframe):
-    # Matplot&Seaborn
+    # Matplot & Seaborn
     print("\033[33m#### Matplot & Seaborn Graph Generated ####\033[0m")
 
-    #plt.style.use('seaborn-v0_8-whitegrid')
+    plt.style.use('seaborn-v0_8-whitegrid')
     dataframe = sns.load_dataset("penguins") #Skip After
     sns.pairplot(dataframe, hue="species", diag_kind="hist")
 
