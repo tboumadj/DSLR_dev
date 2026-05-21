@@ -71,3 +71,13 @@ def get_hist_house(filepath, dataset, feat):
         result[h].append(x)
 
     return result
+
+#------------------
+
+def dataset_to_dataframe(dataset, numeric_cols):
+
+    result = pd.DataFrame(data = dataset)
+    result.dropna(thresh=2)
+    
+    print(f'result = {result}')
+    return result

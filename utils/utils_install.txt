@@ -1,0 +1,3 @@
+pip install pandas #For loader and Test
+pip install matplotlib #For graph (scatter , hist)
+pip install seaborn #For graph Pair Plot

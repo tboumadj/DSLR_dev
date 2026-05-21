@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import seaborn as sns
 from utils.load import get_xy
 
 HOUSE_COLORS = {
@@ -162,4 +163,15 @@ def print_graph_hist(data_house, feat):
     plt.title(f'House for {feat}')
     plt.legend(loc='best')
     plt.tight_layout()
+    plt.show()
+
+def print_graph_sns(datafeame):
+    # Matplot&Seaborn
+    print("\033[33m#### Matplot & Seaborn Graph Generated ####\033[0m")
+
+    #plt.style.use('seaborn-v0_8-whitegrid')
+    penguins = sns.load_dataset("penguins")
+    dataframe = penguins
+    sns.pairplot(dataframe, hue="species", diag_kind="hist")
+
     plt.show()
