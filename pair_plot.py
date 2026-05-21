@@ -19,7 +19,7 @@ def main():
         if is_numeric_column(vals) and col not in EXCLUDE
     ]
     dataframe = dataset_to_dataframe(dataset, numeric_cols)
-    #print_graph_sns(dataframe)
+    print_graph_sns(dataframe)
 
 if __name__ == '__main__':
     main()
