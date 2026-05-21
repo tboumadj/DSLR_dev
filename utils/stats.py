@@ -123,7 +123,8 @@ def print_describe(stats_by_feature):
 
 def print_graph_scatter(data_house, feat1, feat2):
     # Matplotlib
-    print("\033[33m#### Matplot Graph ####\033[0m")    
+    print("\033[33m#### Matplot Graph Generated ####\033[0m")
+    plt.style.use('_mpl-gallery')
     plt.figure(figsize=(20, 12))
     
     for house, (x, y) in data_house.items():
@@ -138,6 +139,24 @@ def print_graph_scatter(data_house, feat1, feat2):
     plt.xlabel(feat1)
     plt.ylabel(feat2)
     plt.title(f'{feat1} vs {feat2}')
+    plt.legend(loc='best')
+    plt.tight_layout()
+    plt.show()
+
+def print_graph_hist(data_house, feat):
+    # Matplotlib
+    print("\033[33m#### Matplot Graph Generated ####\033[0m")
+    plt.style.use('_mpl-gallery')
+    plt.figure(figsize=(20, 12))
+    for house, (x) in data_house.items():
+        color = HOUSE_COLORS.get(house, 'gray')
+        plt.hist(x,
+                 label=f'{house} ({len(x)})',
+                 color=color,
+                 bins=8,
+                 linewidth=0.5,)
+    plt.xlabel(feat)
+    plt.title(f'All for {feat}')
     plt.legend(loc='best')
     plt.tight_layout()
     plt.show()

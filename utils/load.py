@@ -54,3 +54,20 @@ def get_xy_house(filepath, dataset, feat1, feat2):
         result[h][1]. append(y)
 
     return result
+
+def get_hist_house(filepath, dataset, feat):
+    houses = load_house_column(filepath, 'Hogwarts House')
+    raw_x = dataset[feat]
+
+    result = {}
+
+    for x, h in zip(raw_x, houses):
+        if x != x:
+            continue
+        if not h:
+            continue
+        if h not in result:
+            result[h] = []
+        result[h].append(x)
+
+    return result
