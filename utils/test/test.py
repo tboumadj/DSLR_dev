@@ -1,6 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-from utils.load import get_xy
+from utils.load import get_xy, load_house_column
+from utils.stats import describe_feature
+
 
 HOUSE_COLORS = {
     'Gryffindor': '#C84B31',
@@ -9,6 +11,7 @@ HOUSE_COLORS = {
     'Hufflepuff': '#E9C46A',
 }
 
+#-------TEST DESCRIBE
 def pandas_feature(stats, filepath):
     df = pd.read_csv(filepath)
     pd_stats = df.describe()
@@ -62,7 +65,7 @@ def pandas_feature(stats, filepath):
                 row += f'{diff:>{col_w}.2e}'
         print(row)
 
-#-----------------------Test Linear + cov
+#-----------------------Test Scatter Plot --Linear + cov
 
 def find_correlation(dataset, numeric_cols):
     import itertools
@@ -143,3 +146,59 @@ def print_graph_test(data_house, feat1, feat2):
     plt.legend(loc='best')
     plt.tight_layout()
     plt.show()
+
+#--------------Test Histogram-- Best std Feat
+def find_homogeneous_feature(filepath, dataset, numeric_cols):
+
+    houses = load_house_column(filepath, 'Hogwarts House')
+    results = []
+
+    for feat in numeric_cols:
+        raw_x = dataset[feat]
+
+        # Séparer les valeurs par maison
+        by_house = {}
+        for x, h in zip(raw_x, houses):
+            if x != x or not h:   # filtre NaN et house manquante
+                continue
+            if h not in by_house:
+                by_house[h] = []
+            by_house[h].append(x)
+
+        # Calculer mean et std pour chaque maison
+        means = []
+        stds  = []
+        for h, vals in by_house.items():
+            stats = describe_feature(vals)
+            means.append(stats['mean'])
+            stds.append(stats['std'])
+
+        if len(means) < 4:        # pas les 4 maisons → skip
+            continue
+
+        # Score = écart entre les moyennes + écart entre les stds
+        # Plus le score est bas, plus les distributions se ressemblent
+        mean_range = max(means) - min(means)
+        std_range  = max(stds)  - min(stds)
+
+        # Normaliser par la std globale pour comparer des features
+        # avec des échelles très différentes (Arithmancy vs Herbology)
+        all_vals = [x for vals in by_house.values() for x in vals]
+        global_std = describe_feature(all_vals)['std']
+
+        if global_std == 0:
+            continue
+
+        score = (mean_range + std_range) / global_std
+        results.append((score, feat, mean_range, std_range))
+
+    # Tri par score croissant — le plus homogène en premier
+    results.sort()
+
+    print(f"\n{'Score':>8}  {'Feature':<35} {'Écart means':>12} {'Écart stds':>10}")
+    print('-' * 72)
+    for score, feat, mr, sr in results:
+        print(f"{score:>8.4f}  {feat:<35} {mr:>12.4f} {sr:>10.4f}")
+
+    print(f"\n→ Best Feature : {results[0][1]}")
+    return results[0][1]
