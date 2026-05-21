@@ -170,7 +170,6 @@ def print_graph_sns(dataframe, numeric_cols):
     print("\033[33m#### Matplot & Seaborn Graph Generated ####\033[0m")
 
     plt.style.use('seaborn-v0_8-whitegrid')
-
     sns.pairplot(dataframe, hue="Hogwarts House", 
                  vars= numeric_cols,
                  palette=HOUSE_COLORS,
