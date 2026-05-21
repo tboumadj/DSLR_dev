@@ -170,6 +170,7 @@ def print_graph_sns(dataframe):
     print("\033[33m#### Matplot & Seaborn Graph Generated ####\033[0m")
 
     #plt.style.use('seaborn-v0_8-whitegrid')
+    dataframe = sns.load_dataset("penguins") #Skip After
     sns.pairplot(dataframe, hue="species", diag_kind="hist")
 
     plt.show()
