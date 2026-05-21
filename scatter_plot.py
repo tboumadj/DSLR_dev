@@ -4,9 +4,9 @@ from utils.stats import print_graph_scatter
 from utils.test.test import print_graph_test, find_correlation
 
 def main():
-    # if len(sys.argv) != 4:
-    #     print("\033[33m#### ---> Python scatter_plot.py datasets/dataset_train.csv Feature1 Feature2 ####\033[0m")
-    #     sys.exit(1)
+    #if len(sys.argv) != 4:
+    #    print("\033[33m#### ---> Python scatter_plot.py datasets/dataset_train.csv Feature1 Feature2 ####\033[0m")
+    #    sys.exit(1)
 
 #-------Loader
     #filepath = sys.argv[1]

@@ -173,7 +173,7 @@ def find_homogeneous_feature(filepath, dataset, numeric_cols):
             means.append(stats['mean'])
             stds.append(stats['std'])
 
-        if len(means) < 4:        # pas les 4 maisons → skip
+        if len(means) < 4:
             continue
 
         # Score = écart entre les moyennes + écart entre les stds

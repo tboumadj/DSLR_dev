@@ -8,10 +8,12 @@ def main():
     #    print("\033[33m#### ---> Python describe.py datasets/dataset_train.csv ####\033[0m")
     #    sys.exit(1)
 
+#-----Loader
     #filepath = sys.argv[1]
     filepath = './datasets/dataset_train.csv'
     dataset = load_csv(filepath)
 
+#-------
     print("\033[32m#### All file column: ####\033[0m")
     for col, vals in dataset.items():
         clean = [x for x in vals if x == x]
@@ -24,7 +26,7 @@ def main():
     for col in numeric_cols:
         print(f"  {col}")
 
-    #Stat
+#---------Stat
     stats = {}
     print("\033[32m#### Stats by feature: ####\033[0m")
     for col in numeric_cols:
@@ -32,7 +34,7 @@ def main():
 
     print_describe(stats)
 
-    #Test + diff with pandas
+#--------Test + diff with pandas
     pandas_feature(stats, filepath)
 
 if __name__ == '__main__':
