@@ -1,13 +1,5 @@
 #Cache
-utils/__pycache__
 
-__pycache__/
-*.py
-*.pyc
-
-/*/__pycache__/
-*.py
-*.pyc
-
-/*/*/__pycache__/
-*.py*.pyc
+__pycache__/*.pyc
+utils/__pycache__/*.pyc
+utils/test/__pycache__/*pyc
