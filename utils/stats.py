@@ -124,7 +124,7 @@ def print_describe(stats_by_feature):
 def print_graph_scatter(data_house, feat1, feat2):
     # Matplotlib
     print("\033[33m#### Matplot Graph Generated ####\033[0m")
-    plt.style.use('_mpl-gallery')
+    plt.style.use('seaborn-v0_8-whitegrid')
     plt.figure(figsize=(20, 12))
     
     for house, (x, y) in data_house.items():
@@ -146,7 +146,7 @@ def print_graph_scatter(data_house, feat1, feat2):
 def print_graph_hist(data_house, feat):
     # Matplotlib
     print("\033[33m#### Matplot Graph Generated ####\033[0m")
-    plt.style.use('_mpl-gallery')
+    plt.style.use('seaborn-v0_8-whitegrid')
     plt.figure(figsize=(20, 12))
     for house, (x) in data_house.items():
         color = HOUSE_COLORS.get(house, 'gray')
@@ -154,9 +154,12 @@ def print_graph_hist(data_house, feat):
                  label=f'{house} ({len(x)})',
                  color=color,
                  bins=8,
+                 alpha=0.6,
                  linewidth=0.5,)
+    
+    #----------
     plt.xlabel(feat)
-    plt.title(f'All for {feat}')
+    plt.title(f'House for {feat}')
     plt.legend(loc='best')
     plt.tight_layout()
     plt.show()

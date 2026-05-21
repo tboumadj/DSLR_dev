@@ -13,7 +13,7 @@ def main():
     dataset = load_csv(filepath)
 
     #feat = sys.argv[2]
-    feat = "Herbology"
+    feat = "Arithmancy"
     #---------------
 
     data_house = get_hist_house(filepath, dataset, feat)
