@@ -14,7 +14,7 @@ def main():
     dataset = load_csv(filepath)
 
     #feat = sys.argv[2]
-    feat = "Astronomy"
+    feat = "Arithmancy"
 
 #----TEST-----
     EXCLUDE      = ['Index']
@@ -23,13 +23,13 @@ def main():
         if is_numeric_column(vals) and col not in EXCLUDE
     ]
     best_feat = find_homogeneous_feature(filepath, dataset, numeric_cols)
-    #data_house = get_hist_house(filepath, dataset, best_feat)
-    #print_graph_hist(data_house, best_feat)
+    data_house = get_hist_house(filepath, dataset, best_feat)
+    print_graph_hist(data_house, best_feat)
 
 #---------------
 
-    data_house = get_hist_house(filepath, dataset, feat)
-    print_graph_hist(data_house, feat)
+    # data_house = get_hist_house(filepath, dataset, feat)
+    # print_graph_hist(data_house, feat)
 
 if __name__ == '__main__':
     main()
