@@ -16,7 +16,6 @@ def load_house_column(filepath, house_col):
     if house_col not in df.columns:
         raise ValueError(f"House '{house_col}' Missing")
     
-    df[house_col] = df[house_col].fillna(None)
     return df[house_col].tolist()
 
 # -------------Getter
@@ -46,7 +45,7 @@ def get_xy_house(filepath, dataset, feat1, feat2):
     for x, y, h in zip(raw_x, raw_y, houses):
         if x != x or y != y:
             continue
-        if not h:
+        if h != h:
             continue
         if h not in result:
             result[h] = ([], [])
@@ -64,7 +63,7 @@ def get_hist_house(filepath, dataset, feat):
     for x, h in zip(raw_x, houses):
         if x != x:
             continue
-        if not h:
+        if h != h:
             continue
         if h not in result:
             result[h] = []
