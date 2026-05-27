@@ -2,6 +2,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from utils.load import get_xy, load_house_column
 from utils.stats import describe_feature
+try:
+    from config_local import FIGSIZE
+except ImportError:
+    FIGSIZE = (20, 12)
 
 
 HOUSE_COLORS = {
@@ -115,7 +119,7 @@ def linear_regression(x, y):
 def print_graph_test(data_house, feat1, feat2):
     # Matplotlib
     print("\033[33m#### Matplot Graph ####\033[0m")
-    plt.figure(figsize=(20, 12), dpi=120)
+    plt.figure(figsize=FIGSIZE, dpi=120)
 
     all_x, all_y = [], []
     
