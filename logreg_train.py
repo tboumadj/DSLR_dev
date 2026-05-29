@@ -1,6 +1,6 @@
 import sys
 from utils.load import is_numeric_column, load_csv, dataset_to_dataframe
-from utils.train import normalize_feat, extract_X_y
+from utils.train import standardize_feat, extract_X_y
 
 def main():
 #--------Loader
@@ -21,11 +21,11 @@ def main():
     dataframe = dataset_to_dataframe(filepath, valid_feat)
     print(f'valid dataframe : {dataframe.shape}')
 
-#--------Noralisation
+#--------Standardisation
 
-    dataframe_norm, params = normalize_feat(dataframe, valid_feat)
-    print(f'df_norm : {dataframe_norm.shape}')
-    X, y = extract_X_y(dataframe_norm, valid_feat)
+    dataframe_stand, params = standardize_feat(dataframe, valid_feat)
+    print(f'df_stand : {dataframe_stand.shape}')
+    X, y = extract_X_y(dataframe_stand, valid_feat)
  
 #------------------Test Print
 
