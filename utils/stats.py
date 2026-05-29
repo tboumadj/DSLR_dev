@@ -2,6 +2,11 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from utils.load import get_xy
 
+try:
+    from config_local import FIGSIZE
+except ImportError:
+    FIGSIZE = (20, 12)
+
 HOUSE_COLORS = {
     'Gryffindor': '#C84B31',
     'Slytherin':  '#2D6A4F',
@@ -126,7 +131,7 @@ def print_graph_scatter(data_house, feat1, feat2):
     # Matplotlib
     print("\033[33m#### Matplot Graph Generated ####\033[0m")
     plt.style.use('seaborn-v0_8-whitegrid')
-    plt.figure(figsize=(20, 12))
+    plt.figure(figsize=FIGSIZE)
     
     for house, (x, y) in data_house.items():
         color = HOUSE_COLORS.get(house, 'gray')
@@ -148,7 +153,8 @@ def print_graph_hist(data_house, feat):
     # Matplotlib
     print("\033[33m#### Matplot Graph Generated ####\033[0m")
     plt.style.use('seaborn-v0_8-whitegrid')
-    plt.figure(figsize=(20, 12))
+
+    plt.figure(figsize=FIGSIZE)
     for house, (x) in data_house.items():
         color = HOUSE_COLORS.get(house, 'gray')
         plt.hist(x,

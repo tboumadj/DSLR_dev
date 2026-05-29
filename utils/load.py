@@ -50,7 +50,7 @@ def get_xy_house(filepath, dataset, feat1, feat2):
         if h not in result:
             result[h] = ([], [])
         result[h][0].append(x)
-        result[h][1]. append(y)
+        result[h][1].append(y)
 
     return result
 

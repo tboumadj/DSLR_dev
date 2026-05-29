@@ -3,3 +3,4 @@
 __pycache__/*.pyc
 utils/__pycache__/*.pyc
 utils/test/__pycache__/*pyc
+config_local.py
