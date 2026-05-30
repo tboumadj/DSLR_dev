@@ -63,6 +63,7 @@ def main():
     Hufflepuff = train_model(valid_feat, X, y, "Hufflepuff")
 
     weights_dict = {
+        "features": valid_feat,
         "Gryffindor": Gryffindor.tolist(),
         "Slytherin": Slytherin.tolist(),
         "Ravenclaw": Ravenclaw.tolist(),
