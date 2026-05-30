@@ -1,13 +1,15 @@
 import json
-import sys
 
 import numpy as np
 from utils.load import is_numeric_column, load_csv, dataset_to_dataframe
 from utils.train import standardize_feat, extract_X_y
-import math
 
 ITERATION_NUMBER = 100
 LEARNING_RATE = 0.01
+EXCLUDE = ['Index',
+           'Arithmancy',
+           'Astronomy',
+           'Care of Magical Creatures']
 
 def train_model(valid_feat, X, Y, house):
     
@@ -19,28 +21,28 @@ def train_model(valid_feat, X, Y, house):
         # add 1 column to datas to include biais to dot product 
         predicts = 1 / (1 + np.exp(-np.dot(X, weights))) 
 
-        
         gradiant = 1 / len(X) * np.dot(X.T, predicts - (house == Y) ) 
 
         weights = weights - gradiant
     
     mean_absolute_error = np.sum(np.abs(predicts - (house == Y))) / len(X)
     print(f"Mean absolute error for {house}:", mean_absolute_error)
+
     return (weights)
 
 
 def main():
 
 #--------Loader
+
     filepath = './datasets/dataset_train.csv'
     dataset = load_csv(filepath)
 
     print("\033[33m### Run Training Part ... ####\033[0m")
+
 #--------Prep Data
-    EXCLUDE      = ['Index',
-                    'Arithmancy',
-                    'Astronomy',
-                    'Care of Magical Creatures']
+
+
     valid_feat = [
         col for col, vals in dataset.items()
         if is_numeric_column(vals) and col not in EXCLUDE
@@ -52,7 +54,6 @@ def main():
 #--------Standardisation
 
     dataframe_stand, params = standardize_feat(dataframe, valid_feat)
-    print(f'df_stand : {dataframe_stand.shape}')
     X, y = extract_X_y(dataframe_stand, valid_feat)
 
 #--------Training 
@@ -62,6 +63,8 @@ def main():
     Ravenclaw = train_model(valid_feat, X, y, "Ravenclaw")
     Hufflepuff = train_model(valid_feat, X, y, "Hufflepuff")
 
+#--------Output
+
     weights_dict = {
         "features": valid_feat,
         "Gryffindor": Gryffindor.tolist(),
@@ -70,14 +73,10 @@ def main():
         "Hufflepuff": Hufflepuff.tolist(),
     }
 
+    print("\033[33m### Generate weights.json for predict ... ####\033[0m")
+
     with open("weights.json", "w") as weights_file:
             json.dump(weights_dict, weights_file)
-
-
-#------------------Test Print
-
-#---------------
-    print("\033[33m### Generate JsonConfig for predict ... ####\033[0m")
 
 if __name__ == '__main__':
     main()
