@@ -12,8 +12,8 @@ def standardize_feat(df, valid_feat):
     return df_stand, params
 
 def extract_X_y(df, valid_feat):
-    X = df[valid_feat].values.tolist()
-    y = df['Hogwarts House'].tolist()
+    X = df[valid_feat].values
+    y = df['Hogwarts House'].values
     return X, y
 
 def save_config(house):
