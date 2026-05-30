@@ -73,10 +73,13 @@ def get_hist_house(filepath, dataset, feat):
 
 #------------------
 
-def dataset_to_dataframe(filepath, numeric_cols):
+def dataset_to_dataframe(filepath, numeric_cols, keep_houses=True):
 
     dataset = pd.read_csv(filepath)
-    cols_to_keep = numeric_cols + ['Hogwarts House']
+    if keep_houses:
+        cols_to_keep = numeric_cols + ['Hogwarts House']
+    else:
+        cols_to_keep = numeric_cols
     dataclean = dataset[cols_to_keep]
     result = pd.DataFrame(data = dataclean)
     result = result.dropna()
