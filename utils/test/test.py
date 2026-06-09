@@ -206,3 +206,57 @@ def find_homogeneous_feature(filepath, dataset, numeric_cols):
 
     print(f"\n→ Best Feature : {results[0][1]}")
     return results[0][1]
+
+#--------------------Test Predict-----
+
+def evaluate_accuracy(true_filepath, pred_filepath):
+  
+    df_true = pd.read_csv(true_filepath)
+    df_pred = pd.read_csv(pred_filepath)
+
+    # Vérifier que les deux fichiers ont le même nombre de lignes
+    #if len(df_true) != len(df_pred):
+    #    print(f"Tailles différentes : {len(df_true)} vs {len(df_pred)}")
+    #    return None
+
+    true_labels = df_true['Hogwarts House'].tolist()
+    pred_labels = df_pred['Hogwarts House'].tolist()
+
+    # Compter les bonnes prédictions
+    correct = sum(1 for t, p in zip(true_labels, pred_labels) if t == p)
+    total   = len(true_labels)
+    accuracy = correct / total * 100
+
+    # Détail par maison
+    houses = ['Gryffindor', 'Slytherin', 'Ravenclaw', 'Hufflepuff']
+    print(f"\n{'='*45}")
+    print(f"  ACCURACY GLOBALE : {accuracy:.2f}%  ({correct}/{total})")
+    print(f"{'='*45}")
+    print(f"\n  Détail par maison :")
+    print(f"  {'Maison':<20} {'Correct':>8} {'Total':>8} {'Accuracy':>10}")
+    print(f"  {'-'*48}")
+
+    for house in houses:
+        house_total   = sum(1 for t in true_labels if t == house)
+        house_correct = sum(1 for t, p in zip(true_labels, pred_labels)
+                           if t == house and p == house)
+        house_acc     = house_correct / house_total * 100 if house_total > 0 else 0
+        print(f"  {house:<20} {house_correct:>8} {house_total:>8} {house_acc:>9.2f}%")
+
+    # Matrice de confusion
+    print(f"\n  Matrice de confusion :")
+    print(f"  {'':20}", end='')
+    for h in houses:
+        print(f"{h[:10]:>12}", end='')
+    print()
+
+    for h_true in houses:
+        print(f"  {h_true:<20}", end='')
+        for h_pred in houses:
+            count = sum(1 for t, p in zip(true_labels, pred_labels)
+                       if t == h_true and p == h_pred)
+            print(f"{count:>12}", end='')
+        print()
+
+    print()
+    return accuracy
