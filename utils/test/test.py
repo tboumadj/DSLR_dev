@@ -1,6 +1,9 @@
+import json
+import sys
+
 import pandas as pd
 import matplotlib.pyplot as plt
-from utils.load import get_xy, load_house_column
+from utils.load import get_xy, load_house_column, dataset_to_dataframe
 from utils.stats import describe_feature
 try:
     from config_local import FIGSIZE
@@ -210,14 +213,21 @@ def find_homogeneous_feature(filepath, dataset, numeric_cols):
 #--------------------Test Predict-----
 
 def evaluate_accuracy(true_filepath, pred_filepath):
+
+    try: 
+        with open("weights.json") as weights_file:
+            data = json.load(weights_file)
+            features = data["features"]
+
+    except FileNotFoundError:
+        print("weights.json not found, run logreg_train.py first")
+        sys.exit(1)
   
-    df_true = pd.read_csv(true_filepath)
+    df_true = dataset_to_dataframe(true_filepath, features, keep_houses=True)
     df_pred = pd.read_csv(pred_filepath)
 
     # Vérifier que les deux fichiers ont le même nombre de lignes
-    #if len(df_true) != len(df_pred):
-    #    print(f"Tailles différentes : {len(df_true)} vs {len(df_pred)}")
-    #    return None
+
 
     true_labels = df_true['Hogwarts House'].tolist()
     pred_labels = df_pred['Hogwarts House'].tolist()
