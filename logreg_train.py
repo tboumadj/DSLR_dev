@@ -5,7 +5,7 @@ from utils.load import is_numeric_column, load_csv, dataset_to_dataframe
 from utils.train import standardize_feat, extract_X_y
 
 ITERATION_NUMBER = 100
-LEARNING_RATE = 0.01
+LEARNING_RATE = 1
 EXCLUDE = ['Index',
            'Arithmancy',
            'Astronomy',
@@ -23,7 +23,7 @@ def train_model(valid_feat, X, Y, house):
 
         gradiant = 1 / len(X) * np.dot(X.T, predicts - (house == Y) ) 
 
-        weights = weights - gradiant
+        weights = weights - LEARNING_RATE * gradiant
     
     mean_absolute_error = np.sum(np.abs(predicts - (house == Y))) / len(X)
     print(f"Mean absolute error for {house}:", mean_absolute_error)
