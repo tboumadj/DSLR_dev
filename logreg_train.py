@@ -18,9 +18,12 @@ def train_model(valid_feat, X, Y, house, sample_size):
     X = np.hstack([np.ones((X.shape[0], 1)), X])
     Y_batch = Y
     X_batch = X
+    batch_mode = False
 
     if sample_size != len(X):
          batch_mode = True
+         # same seed to provide repetability
+         np.random.seed(0)
 
     for i in range (0, ITERATION_NUMBER):
 
@@ -91,6 +94,22 @@ def main():
     Slytherin = train_model(valid_feat, X, y, "Slytherin", sample_size)
     Ravenclaw = train_model(valid_feat, X, y, "Ravenclaw", sample_size)
     Hufflepuff = train_model(valid_feat, X, y, "Hufflepuff", sample_size)
+
+#--------Print precision  
+
+
+    X = np.hstack([np.ones((X.shape[0], 1)), X])
+
+    predict_Gryffindor = np.dot(X, Gryffindor)
+    predict_Slytherin = np.dot(X, Slytherin)
+    predict_Ravenclaw = np.dot(X, Ravenclaw)
+    predict_Hufflepuff = np.dot(X, Hufflepuff)
+
+    houses = ["Gryffindor", "Slytherin", "Ravenclaw", "Hufflepuff"]
+    scores = np.column_stack([predict_Gryffindor, predict_Slytherin, predict_Ravenclaw, predict_Hufflepuff])
+    predicted = [houses[i] for i in np.argmax(scores, axis=1)]
+    precision = np.array((predicted == y).mean())
+    print(f"Precision for predict the training data: {(precision * 100):.2f}%")
 
 #--------Output
 
