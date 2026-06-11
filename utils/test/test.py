@@ -3,7 +3,7 @@ import sys
 
 import pandas as pd
 import matplotlib.pyplot as plt
-from utils.load import get_xy, load_house_column, dataset_to_dataframe_v2, dataset_to_dataframe
+from utils.load import get_xy, load_house_column, dataset_to_dataframe, dataset_to_dataframe_v2, dataset_to_dataframe_v3
 from utils.stats import describe_feature
 try:
     from config_local import FIGSIZE
@@ -223,7 +223,7 @@ def evaluate_accuracy(true_filepath, pred_filepath):
         print("weights.json not found, run logreg_train.py first")
         sys.exit(1)
   
-    df_true = dataset_to_dataframe(true_filepath, features, keep_houses=True)
+    df_true = dataset_to_dataframe_v3(true_filepath, features, keep_houses=True)
     # df_true = dataset_to_dataframe_v2(true_filepath, features, keep_houses=True)
     df_pred = pd.read_csv(pred_filepath)
 

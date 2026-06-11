@@ -1,7 +1,7 @@
 import json
 
 import numpy as np
-from utils.load import is_numeric_column, load_csv, dataset_to_dataframe_v2, dataset_to_dataframe
+from utils.load import is_numeric_column, load_csv, dataset_to_dataframe, dataset_to_dataframe_v2, dataset_to_dataframe_v3
 from utils.train import standardize_feat, extract_X_y
 
 ITERATION_NUMBER = 500
@@ -48,7 +48,7 @@ def main():
         if is_numeric_column(vals) and col not in EXCLUDE
     ]
     
-    dataframe = dataset_to_dataframe(filepath, valid_feat)
+    dataframe = dataset_to_dataframe_v3(filepath, valid_feat)
     # dataframe = dataset_to_dataframe_v2(filepath, valid_feat)
     print(f'valid dataframe : {dataframe.shape}')
 

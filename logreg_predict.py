@@ -3,7 +3,7 @@ import sys
 
 import numpy as np
 
-from utils.load import dataset_to_dataframe_v2, dataset_to_dataframe
+from utils.load import dataset_to_dataframe, dataset_to_dataframe_v2, dataset_to_dataframe_v3
 from utils.train import extract_X_y, standardize_feat
 from utils.test.test import evaluate_accuracy
 
@@ -27,7 +27,7 @@ def main():
         print("weights.json not found, run logreg_train.py first")
         sys.exit(1)
 
-    dataframe = dataset_to_dataframe(FILEPATH, features, keep_houses=False)
+    dataframe = dataset_to_dataframe_v3(FILEPATH, features, keep_houses=False)
     # dataframe = dataset_to_dataframe_v2(FILEPATH, features, keep_houses=False)
     dataframe_stand, params = standardize_feat(dataframe, features)
 
