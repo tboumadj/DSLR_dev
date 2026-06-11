@@ -22,8 +22,6 @@ def train_model(valid_feat, X, Y, house, sample_size):
 
     if sample_size != len(X):
          batch_mode = True
-         # same seed to provide repeatability
-         np.random.seed(0)
 
     for i in range (0, EPOCHS):
 
@@ -84,6 +82,8 @@ def main():
              sample_size = args.batch_size
 
 #--------Training 
+
+    np.random.seed(0)
 
     Gryffindor_w = train_model(valid_feat, X, y, "Gryffindor", sample_size)
     Slytherin_w = train_model(valid_feat, X, y, "Slytherin", sample_size)
