@@ -93,16 +93,16 @@ def describe_feature(column):
     # Range
     range = maximum - minimum
 
-    # IQR Range
+    # IQR Range (interquartile range is a measure of statistical dispersion)
     iqr = p75 - p25
 
-    # Skewness
+    # Skewness (coefficient d'asymétrie)
     skewness = skew(clean)
 
-    # Kurtosis
+    # Kurtosis (coefficient d’aplatissement)
     kurt_var = kurtosis(clean)
 
-    # Outliers
+    # Outliers (donnée aberrante)
     n_clean = pd.Series(column).dropna()
 
     outliers = n_clean[(n_clean < p25 - 1.5*iqr) |

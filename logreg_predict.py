@@ -5,7 +5,6 @@ import numpy as np
 
 from utils.load import dataset_to_dataframe
 from utils.train import extract_X_y, standardize_feat
-from utils.test.test import evaluate_accuracy
 
 FILEPATH = './datasets/dataset_train.csv'
 # FILEPATH = './datasets/dataset_test.csv'
@@ -52,9 +51,6 @@ def main():
             f.write(f"{i},{house}\n")
 
     print("\033[33m### Successful: prediction writed in houses.csv ####\033[0m")
-
-    #----------------Test Predict Accuracy
-    evaluate_accuracy("./datasets/dataset_train.csv", "./houses.csv")
 
 
 
