@@ -223,7 +223,7 @@ def evaluate_accuracy(true_filepath, pred_filepath):
         print("weights.json not found, run logreg_train.py first")
         sys.exit(1)
   
-    df_true = dataset_to_dataframe_v3(true_filepath, features, keep_houses=True)
+    df_true = dataset_to_dataframe(true_filepath, features, keep_houses=True)
     # df_true = dataset_to_dataframe_v2(true_filepath, features, keep_houses=True)
     df_pred = pd.read_csv(pred_filepath)
 
