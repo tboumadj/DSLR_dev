@@ -80,8 +80,28 @@ def dataset_to_dataframe(filepath, numeric_cols, keep_houses=True):
         cols_to_keep = numeric_cols + ['Hogwarts House']
     else:
         cols_to_keep = numeric_cols
+
     dataclean = dataset[cols_to_keep]
     result = pd.DataFrame(data = dataclean)
+    result = result.dropna()
+
+    return result
+
+def dataset_to_dataframe_v2(filepath, numeric_cols, keep_houses=True):
+    dataset = pd.read_csv(filepath)
+
+    if keep_houses:
+        cols_to_keep = numeric_cols + ['Hogwarts House']
+    else:
+        cols_to_keep = numeric_cols
+    
+    dataclean = dataset[cols_to_keep]
+    result = pd.DataFrame(data = dataclean)
+
+    for col in numeric_cols:
+        mean = result[col].mean()
+        result[col] = result[col].fillna(mean)
+
     result = result.dropna()
 
     return result
