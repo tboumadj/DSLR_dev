@@ -3,6 +3,7 @@ import json
 import numpy as np
 from utils.load import is_numeric_column, load_csv, dataset_to_dataframe
 from utils.train import standardize_feat, extract_X_y
+import argparse
 
 ITERATION_NUMBER = 50
 LEARNING_RATE = 1
@@ -11,27 +12,43 @@ EXCLUDE = ['Index',
            'Astronomy',
            'Divination']
 
-def train_model(valid_feat, X, Y, house):
+def train_model(valid_feat, X, Y, house, sample_size):
     
     weights = np.zeros(len(valid_feat) + 1)
     X = np.hstack([np.ones((X.shape[0], 1)), X])
+    Y_batch = Y
+    X_batch = X
+
+    if sample_size != len(X):
+         batch_mode = True
 
     for i in range (0, ITERATION_NUMBER):
 
-        # add 1 column to datas to include biais to dot product 
-        predicts = 1 / (1 + np.exp(-np.dot(X, weights))) 
+        if batch_mode:
+            indexs = np.random.choice(len(X), size=sample_size, replace=False)
+            X_batch = X[indexs]
+            Y_batch = Y[indexs]
+            
 
-        gradiant = 1 / len(X) * np.dot(X.T, predicts - (house == Y) ) 
+        # add 1 column to datas to include biais to dot product 
+        predicts = 1 / (1 + np.exp(-np.dot(X_batch, weights))) 
+
+        gradiant = 1 / len(X_batch) * np.dot(X_batch.T, predicts - (house == Y_batch) ) 
 
         weights = weights - LEARNING_RATE * gradiant
     
-    mean_absolute_error = np.sum(np.abs(predicts - (house == Y))) / len(X)
-    print(f"Mean absolute error for {house}:", mean_absolute_error)
-
     return (weights)
 
 
 def main():
+
+#--------args 
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-s", "--stochastic", action="store_true", help="Activate stochastic gradient descent")
+
+    parser.add_argument("-b", "--batch-size", action="store", type=int, help="Specify batch size for stochastic gradient descent (default = 16)", default=16)
+    args = parser.parse_args()
+
 
 #--------Loader
 
@@ -56,12 +73,24 @@ def main():
     dataframe_stand, params = standardize_feat(dataframe, valid_feat)
     X, y = extract_X_y(dataframe_stand, valid_feat)
 
+#--------sample size
+
+    sample_size = len(X)
+
+    if (args.stochastic == True):
+        if (args.batch_size == 1):
+             print("Mode: pure stochastic gradiant descent")
+             sample_size = 1
+        else: 
+             print(f"Mode: mini batch descent gradiant with {args.batch_size} samples")
+             sample_size = args.batch_size
+
 #--------Training 
 
-    Gryffindor = train_model(valid_feat, X, y, "Gryffindor")
-    Slytherin = train_model(valid_feat, X, y, "Slytherin")
-    Ravenclaw = train_model(valid_feat, X, y, "Ravenclaw")
-    Hufflepuff = train_model(valid_feat, X, y, "Hufflepuff")
+    Gryffindor = train_model(valid_feat, X, y, "Gryffindor", sample_size)
+    Slytherin = train_model(valid_feat, X, y, "Slytherin", sample_size)
+    Ravenclaw = train_model(valid_feat, X, y, "Ravenclaw", sample_size)
+    Hufflepuff = train_model(valid_feat, X, y, "Hufflepuff", sample_size)
 
 #--------Output
 
