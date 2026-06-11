@@ -4,12 +4,12 @@ import numpy as np
 from utils.load import is_numeric_column, load_csv, dataset_to_dataframe, dataset_to_dataframe_v2, dataset_to_dataframe_v3
 from utils.train import standardize_feat, extract_X_y
 
-ITERATION_NUMBER = 500
-LEARNING_RATE = 0.1
+ITERATION_NUMBER = 50
+LEARNING_RATE = 1
 EXCLUDE = ['Index',
            'Arithmancy',
            'Astronomy',
-           'Care of Magical Creatures']
+           'Herbology']
 
 def train_model(valid_feat, X, Y, house):
     
