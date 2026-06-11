@@ -1,20 +1,75 @@
 import json
 
 import numpy as np
+import matplotlib.pyplot as plt
 from utils.load import is_numeric_column, load_csv, dataset_to_dataframe
 from utils.train import standardize_feat, extract_X_y
 import argparse
 
 EPOCHS = 150
-LEARNING_RATE = 0.1
+LEARNING_RATE = 10
 EXCLUDE = ['Index',
            'Arithmancy',
            'Astronomy',
-           'Divination']
+           'Herbology']
 DATASET_PATH = './datasets/dataset_train.csv'
+PLOT_STATE = None
+
+
+def compute_cost(X, Y, weights, house):
+    y_binary = (Y == house).astype(float)
+    predictions = 1 / (1 + np.exp(-np.dot(X, weights)))
+    epsilon = 1e-15
+    predictions = np.clip(predictions, epsilon, 1 - epsilon)
+    return -np.mean(y_binary * np.log(predictions) + (1 - y_binary) * np.log(1 - predictions))
+
+
+def init_cost_plot(houses):
+    plt.ion()
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.set_title("Cost function progression during training")
+    ax.set_xlabel("Iteration")
+    ax.set_ylabel("Cost")
+    ax.grid(True, alpha=0.3)
+
+    plot_state = {
+        "fig": fig,
+        "ax": ax,
+    }
+
+    for house in houses:
+        line, = ax.plot([], [], label=house)
+        plot_state[house] = {
+            "line": line,
+            "iterations": [],
+            "costs": [],
+        }
+
+    ax.legend()
+    fig.tight_layout()
+    plt.show(block=False)
+    return plot_state
+
+
+def update_cost_plot(house, iteration, cost):
+    if PLOT_STATE is None:
+        return
+
+    house_state = PLOT_STATE[house]
+    house_state["iterations"].append(iteration)
+    house_state["costs"].append(cost)
+    house_state["line"].set_data(house_state["iterations"], house_state["costs"])
+
+    ax = PLOT_STATE["ax"]
+    ax.relim()
+    ax.autoscale_view()
+    PLOT_STATE["fig"].canvas.draw_idle()
+    PLOT_STATE["fig"].canvas.flush_events()
+    plt.pause(0.001)
 
 def train_model(valid_feat, X, Y, house, sample_size):
-    
+    global PLOT_STATE
+
     weights = np.zeros(len(valid_feat) + 1)
     X = np.hstack([np.ones((X.shape[0], 1)), X])
     Y_batch = Y
@@ -37,11 +92,15 @@ def train_model(valid_feat, X, Y, house, sample_size):
         gradient = 1 / len(X_batch) * np.dot(X_batch.T, predicts - (house == Y_batch) ) 
 
         weights = weights - LEARNING_RATE * gradient
+
+        update_cost_plot(house, i + 1, compute_cost(X, Y, weights, house))
     
     return (weights)
 
 
 def main():
+
+    global PLOT_STATE
 
 #--------Args 
 
@@ -85,6 +144,9 @@ def main():
 
     np.random.seed(0)
 
+    houses = ["Gryffindor", "Slytherin", "Ravenclaw", "Hufflepuff"]
+    PLOT_STATE = init_cost_plot(houses)
+
     Gryffindor_w = train_model(valid_feat, X, y, "Gryffindor", sample_size)
     Slytherin_w = train_model(valid_feat, X, y, "Slytherin", sample_size)
     Ravenclaw_w = train_model(valid_feat, X, y, "Ravenclaw", sample_size)
@@ -101,8 +163,8 @@ def main():
 
     houses = ["Gryffindor", "Slytherin", "Ravenclaw", "Hufflepuff"]
     scores = np.column_stack([prediction_Gryffindor, prediction_Slytherin, prediction_Ravenclaw, prediction_Hufflepuff])
-    predicted = [houses[i] for i in np.argmax(scores, axis=1)]
-    precision = np.array((predicted == y).mean())
+    predicted = np.array([houses[i] for i in np.argmax(scores, axis=1)])
+    precision = (predicted == y).mean()
     print(f"Precision for predict the training data: {(precision * 100):.2f}%")
 
 #--------Output
