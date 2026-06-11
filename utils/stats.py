@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
+import pandas as pd
+from scipy.stats import skew, kurtosis
 from utils.load import get_xy
 
 try:
@@ -88,6 +90,26 @@ def describe_feature(column):
     p50 = percentile(sorted_data, 50)
     p75 = percentile(sorted_data, 75)
 
+    # Range
+    range = maximum - minimum
+
+    # IQR Range
+    iqr = p75 - p25
+
+    # Skewness
+    skewness = skew(clean)
+
+    # Kurtosis
+    kurt_var = kurtosis(clean)
+
+    # Outliers
+    n_clean = pd.Series(column).dropna()
+
+    outliers = n_clean[(n_clean < p25 - 1.5*iqr) |
+              (n_clean > p75 + 1.5*iqr)]
+    
+    nb_outliers = len(outliers)
+
     return {
         "count": count,
         "mean":  mean,
@@ -97,17 +119,22 @@ def describe_feature(column):
         "50%":   p50,
         "75%":   p75,
         "max":   maximum,
+        "range_B": range,
+        "iqr_B": iqr,
+        "skew_B": skewness,
+        "kurt_B": kurt_var,
+        "out_B": nb_outliers,
     }
 
 #--------------Printer
 def print_describe(stats_by_feature):
-    row_labels = ["Count", "Mean", "Std", "Min", "25%", "50%", "75%", "Max"]
-    stat_keys  = ["count", "mean", "std", "min", "25%", "50%", "75%", "max"]
+    row_labels = ["Count", "Mean", "Std", "Min", "25%", "50%", "75%", "Max", "Range_B", "IQR_B", "Skew_B", "Kurt_B", "Out_B"]
+    stat_keys  = ["count", "mean", "std", "min", "25%", "50%", "75%", "max", "range_B", "iqr_B", "skew_B", "kurt_B", "out_B"]
 
     features = list(stats_by_feature.keys())
 
     col_w  = 14   # largeur de chaque colonne de données
-    label_w = 6   # largeur de la colonne de labels
+    label_w = 8   # largeur de la colonne de labels
 
     # Head
     header = ' ' * label_w
