@@ -8,6 +8,7 @@ from utils.train import extract_X_y, standardize_feat
 from utils.test.test import evaluate_accuracy
 
 FILEPATH = './datasets/dataset_train.csv'
+# FILEPATH = './datasets/dataset_test.csv'
 
 
 def main():

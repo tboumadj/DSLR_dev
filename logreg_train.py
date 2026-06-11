@@ -9,7 +9,7 @@ LEARNING_RATE = 1
 EXCLUDE = ['Index',
            'Arithmancy',
            'Astronomy',
-           'Herbology']
+           'Divination']
 
 def train_model(valid_feat, X, Y, house):
     
@@ -49,7 +49,7 @@ def main():
     ]
     
     dataframe = dataset_to_dataframe(filepath, valid_feat)
-    # dataframe = dataset_to_dataframe_v2(filepath, valid_feat)
+    # dataframe = dataset_to_dataframe_v3(filepath, valid_feat)
     print(f'valid dataframe : {dataframe.shape}')
 
 #--------Standardisation

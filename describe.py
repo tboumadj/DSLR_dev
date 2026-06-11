@@ -1,15 +1,8 @@
-import sys
 from utils.load import load_csv, is_numeric_column
 from utils.stats import describe_feature, print_describe
-from utils.test.test import pandas_feature
 
 def main():
-    #if len(sys.argv) != 2:
-    #    print("\033[33m#### ---> Python describe.py datasets/dataset_train.csv ####\033[0m")
-    #    sys.exit(1)
-
 #-----Loader
-    #filepath = sys.argv[1]
     filepath = './datasets/dataset_train.csv'
     dataset = load_csv(filepath)
 
@@ -33,9 +26,6 @@ def main():
         stats[col] = describe_feature(dataset[col])
 
     print_describe(stats)
-
-#--------Test + diff with pandas
-    pandas_feature(stats, filepath)
 
 if __name__ == '__main__':
     main()
