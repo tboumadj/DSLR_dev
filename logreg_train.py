@@ -11,6 +11,7 @@ EXCLUDE = ['Index',
            'Arithmancy',
            'Astronomy',
            'Divination']
+DATASET_PATH = './datasets/dataset_train.csv'
 
 def train_model(valid_feat, X, Y, house, sample_size):
     
@@ -52,8 +53,7 @@ def main():
 
 #--------Loader
 
-    filepath = './datasets/dataset_train.csv'
-    dataset = load_csv(filepath)
+    dataset = load_csv(DATASET_PATH)
 
 #--------Prep Data
 
@@ -62,7 +62,7 @@ def main():
         if is_numeric_column(vals) and col not in EXCLUDE
     ]
     
-    dataframe = dataset_to_dataframe(filepath, valid_feat)
+    dataframe = dataset_to_dataframe(DATASET_PATH, valid_feat)
 
 #--------Standardisation
 
