@@ -4,16 +4,10 @@ from utils.stats import print_graph_hist
 from utils.test.test import find_homogeneous_feature
 
 def main():
-    #if len(sys.argv) != 3:
-    #    print("\033[33m#### ---> Python histogram.py datasets/dataset_train.csv Feature ####\033[0m")
-    #    sys.exit(1)
-
 #-------- Loader
-    #filepath = sys.argv[1]
     filepath = './datasets/dataset_train.csv'
     dataset = load_csv(filepath)
 
-    #feat = sys.argv[2]
     feat = "Arithmancy"
 
 #----TEST-----
