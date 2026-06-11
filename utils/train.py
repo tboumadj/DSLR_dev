@@ -15,6 +15,3 @@ def extract_X_y(df, valid_feat):
     X = df[valid_feat].values
     y = df['Hogwarts House'].values
     return X, y
-
-def save_config(house):
-    return
