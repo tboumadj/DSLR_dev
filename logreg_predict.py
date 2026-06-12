@@ -7,8 +7,7 @@ import pandas as pd
 from utils.load import dataset_to_dataframe_predict
 from utils.train import standardize_feat_predict
 
-FILEPATH = './datasets/dataset_train.csv'
-# FILEPATH = './datasets/dataset_test.csv'
+FILEPATH = './datasets/dataset_test.csv'
 
 #-------------------------TEST-----------
 def evaluate_accuracy(true_filepath, pred_filepath="houses.csv"):
