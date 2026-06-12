@@ -115,7 +115,7 @@ def prepare_data(dataset, args):
 
     dataframe_stand, params = standardize_feat_train(dataframe, valid_feat)
     X, y = extract_X_y(dataframe_stand, valid_feat)
-    return (X, y, valid_feat)
+    return (X, y, valid_feat, params)
 
 def get_sample_size(args, X):
     sample_size = len(X)
@@ -158,14 +158,14 @@ def print_precision(X, y, w):
     precision = np.array((predicted == y).mean())
     print(f"\033[32m### Model precision: {(precision * 100):.2f}% ####\033[0m")
 
-def write_output(valid_feat, w):
+def write_output(valid_feat, w, params):
 
     weights_dict = {
         "features": valid_feat,
-        "Gryffindor": Gryffindor_w.tolist(),
-        "Slytherin": Slytherin_w.tolist(),
-        "Ravenclaw": Ravenclaw_w.tolist(),
-        "Hufflepuff": Hufflepuff_w.tolist(),
+        "Gryffindor": w[HOUSES[0]].tolist(),
+        "Slytherin": w[HOUSES[1]].tolist(),
+        "Ravenclaw": w[HOUSES[2]].tolist(),
+        "Hufflepuff": w[HOUSES[3]].tolist(),
         "Feat_Standard" : params,
     }
 
@@ -179,14 +179,14 @@ def main():
 
     args = parse_args()
     dataset = load_csv(DATASET_PATH)
-    X, y, valid_feat = prepare_data(dataset, args)
+    X, y, valid_feat, params = prepare_data(dataset, args)
     sample_size = get_sample_size(args, X)
     graph = init_graph(args)
     w = start_training(valid_feat, X, y, sample_size, graph)
     if graph:
         graph.stop_interactive()
     print_precision(X, y, w)
-    write_output(valid_feat, w)
+    write_output(valid_feat, w, params)
  
 
 if __name__ == '__main__':
