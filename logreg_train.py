@@ -83,9 +83,9 @@ def train_model(valid_feat, X, Y, house, sample_size, graph):
             Y_batch = Y[indices]
 
         # add 1 column to datas to include biais to dot product 
-        predicts = 1 / (1 + np.exp(-np.dot(X_batch, weights))) 
+        predictions = 1 / (1 + np.exp(-np.dot(X_batch, weights))) 
 
-        gradient = 1 / len(X_batch) * np.dot(X_batch.T, predicts - (house == Y_batch) ) 
+        gradient = 1 / len(X_batch) * np.dot(X_batch.T, predictions - (house == Y_batch) ) 
 
         weights = weights - LEARNING_RATE * gradient
         if graph:
@@ -96,15 +96,10 @@ def train_model(valid_feat, X, Y, house, sample_size, graph):
 
 def main():
 
-#-------
-
-
 #--------Args 
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("-s", "--stochastic", action="store_true", help="Activate stochastic gradient descent")
-
-    parser.add_argument("-b", "--batch-size", action="store", type=int, help="Specify batch size for stochastic gradient descent (default = 16)", default=16)
+    parser.add_argument("-b", "--batch-size", action="store", type=int, help="Specify batch size for gradient descent")
     parser.add_argument("-g", "--graph", action="store_true", help="Display the Loss progression during training")
     args = parser.parse_args()
 
@@ -129,8 +124,9 @@ def main():
 #--------Sample size
 
     sample_size = len(X)
+    print(args.batch_size)
 
-    if (args.stochastic == True):
+    if (args.batch_size != None):
         if (args.batch_size == 1):
              print("mode: pure stochastic gradient descent")
              sample_size = 1
