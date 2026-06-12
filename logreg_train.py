@@ -2,8 +2,8 @@ import json
 
 from matplotlib.ticker import MaxNLocator
 import numpy as np
-from utils.load import is_numeric_column, load_csv, dataset_to_dataframe
-from utils.train import standardize_feat, extract_X_y
+from utils.load import is_numeric_column, load_csv, dataset_to_dataframe_train
+from utils.train import standardize_feat_train, extract_X_y
 import argparse
 from matplotlib import pyplot as plt
 
@@ -109,9 +109,11 @@ def prepare_data(dataset, args):
         if is_numeric_column(vals) and col not in EXCLUDE
     ]
     
-    dataframe = dataset_to_dataframe(DATASET_PATH, valid_feat)
+    dataframe = dataset_to_dataframe_train(DATASET_PATH, valid_feat)
 
-    dataframe_stand, params = standardize_feat(dataframe, valid_feat)
+#--------Standardisation
+
+    dataframe_stand, params = standardize_feat_train(dataframe, valid_feat)
     X, y = extract_X_y(dataframe_stand, valid_feat)
     return (X, y, valid_feat)
 
@@ -160,10 +162,11 @@ def write_output(valid_feat, w):
 
     weights_dict = {
         "features": valid_feat,
-        "Gryffindor": w[HOUSES[0]].tolist(),
-        "Slytherin": w[HOUSES[1]].tolist(),
-        "Ravenclaw": w[HOUSES[2]].tolist(),
-        "Hufflepuff": w[HOUSES[3]].tolist(),
+        "Gryffindor": Gryffindor_w.tolist(),
+        "Slytherin": Slytherin_w.tolist(),
+        "Ravenclaw": Ravenclaw_w.tolist(),
+        "Hufflepuff": Hufflepuff_w.tolist(),
+        "Feat_Standard" : params,
     }
 
     print("\033[33m### Successfully generated weights.json ####\033[0m")

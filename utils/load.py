@@ -73,7 +73,7 @@ def get_hist_house(filepath, dataset, feat):
 
 #------------------
 
-def dataset_to_dataframe(filepath, numeric_cols, keep_houses=True):
+def dataset_to_dataframe_train(filepath, numeric_cols, keep_houses=True):
 
     dataset = pd.read_csv(filepath)
     if keep_houses:
@@ -84,5 +84,22 @@ def dataset_to_dataframe(filepath, numeric_cols, keep_houses=True):
     dataclean = dataset[cols_to_keep]
     result = pd.DataFrame(data = dataclean)
     result = result.dropna()
+
+    return result
+
+def dataset_to_dataframe_predict(filepath, numeric_cols, feat_standard, keep_houses=True):
+    dataset = pd.read_csv(filepath)
+
+    if keep_houses:
+        cols_to_keep = numeric_cols + ['Hogwarts House']
+    else:
+        cols_to_keep = numeric_cols
+    
+    dataclean = dataset[cols_to_keep]
+    result = pd.DataFrame(data = dataclean)
+
+    for col in numeric_cols:
+        mean = feat_standard[col]['mean']
+        result[col] = result[col].fillna(mean)
 
     return result
