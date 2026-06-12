@@ -1,5 +1,6 @@
 import json
 
+from matplotlib.ticker import MaxNLocator
 import numpy as np
 from utils.load import is_numeric_column, load_csv, dataset_to_dataframe
 from utils.train import standardize_feat, extract_X_y
@@ -29,7 +30,7 @@ class PlotLoss:
         self.loss[house].append(loss)
         self.lines[house].set_data(self.iters[house], self.loss[house])
         self.ax.relim()
-        self.ax.autoscale()
+        self.ax.autoscale_view(scalex=False, scaley=True)
         plt.pause(0.001)
 
     def compute_loss(self, X,Y, weights, house):
@@ -50,6 +51,8 @@ class PlotLoss:
         ax.set_xlabel("Epoch")
         ax.set_ylabel("Loss")
         ax.set_title("Cost function progression during training")
+        ax.set_xlim(0, EPOCHS)
+        ax.xaxis.set_major_locator(MaxNLocator(integer=True, prune=None))
         for house in houses:
             color = HOUSE_COLORS.get(house)
             self.lines[house], = ax.plot([], [], label=house, color=color, linewidth=2)
@@ -93,22 +96,14 @@ def train_model(valid_feat, X, Y, house, sample_size, graph):
     
     return (weights)
 
-
-def main():
-
-#--------Args 
-
+def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("-b", "--batch-size", action="store", type=int, help="Specify batch size for gradient descent")
     parser.add_argument("-g", "--graph", action="store_true", help="Display the Loss progression during training")
     args = parser.parse_args()
+    return (args)
 
-#--------Loader
-
-    dataset = load_csv(DATASET_PATH)
-
-#--------Prep Data
-
+def prepare_data(dataset, args):
     valid_feat = [
         col for col, vals in dataset.items()
         if is_numeric_column(vals) and col not in EXCLUDE
@@ -116,16 +111,12 @@ def main():
     
     dataframe = dataset_to_dataframe(DATASET_PATH, valid_feat)
 
-#--------Standardisation
-
     dataframe_stand, params = standardize_feat(dataframe, valid_feat)
     X, y = extract_X_y(dataframe_stand, valid_feat)
+    return (X, y, valid_feat)
 
-#--------Sample size
-
+def get_sample_size(args, X):
     sample_size = len(X)
-    print(args.batch_size)
-
     if (args.batch_size != None):
         if (args.batch_size == 1):
              print("mode: pure stochastic gradient descent")
@@ -133,53 +124,67 @@ def main():
         else: 
              print(f"mode: mini batch descent gradient with {args.batch_size} samples")
              sample_size = args.batch_size
+    return (sample_size)
 
-#--------Init graph 
+def init_graph(args):
     if args.graph:
-        graph = PlotLoss(HOUSES)
+        return PlotLoss(HOUSES)
     else:
-        graph = None
+        return None
 
-#--------Training 
-
+def start_training(valid_feat, X, y, sample_size, graph):
     np.random.seed(0)
+    w = {}
 
-    Gryffindor_w = train_model(valid_feat, X, y, "Gryffindor", sample_size, graph)
-    Slytherin_w = train_model(valid_feat, X, y, "Slytherin", sample_size, graph)
-    Ravenclaw_w = train_model(valid_feat, X, y, "Ravenclaw", sample_size, graph)
-    Hufflepuff_w = train_model(valid_feat, X, y, "Hufflepuff", sample_size, graph)
+    w[HOUSES[0]] = train_model(valid_feat, X, y, HOUSES[0], sample_size, graph)
+    w[HOUSES[1]]= train_model(valid_feat, X, y, HOUSES[1], sample_size, graph)
+    w[HOUSES[2]] = train_model(valid_feat, X, y, HOUSES[2], sample_size, graph)
+    w[HOUSES[3]] = train_model(valid_feat, X, y, HOUSES[3], sample_size, graph)
+    return (w)
 
-    if graph:
-        graph.stop_interactive()
-
-#--------Print precision  
+def print_precision(X, y, w):
 
     X = np.hstack([np.ones((X.shape[0], 1)), X])
 
-    prediction_Gryffindor = np.dot(X, Gryffindor_w)
-    prediction_Slytherin = np.dot(X, Slytherin_w)
-    prediction_Ravenclaw = np.dot(X, Ravenclaw_w)
-    prediction_Hufflepuff = np.dot(X, Hufflepuff_w)
+    prediction_Gryffindor = np.dot(X, w[HOUSES[0]])
+    prediction_Slytherin = np.dot(X, w[HOUSES[1]])
+    prediction_Ravenclaw = np.dot(X, w[HOUSES[2]])
+    prediction_Hufflepuff = np.dot(X, w[HOUSES[3]])
 
     scores = np.column_stack([prediction_Gryffindor, prediction_Slytherin, prediction_Ravenclaw, prediction_Hufflepuff])
     predicted = [HOUSES[i] for i in np.argmax(scores, axis=1)]
     precision = np.array((predicted == y).mean())
-    print(f"Precision for predict the training data: {(precision * 100):.2f}%")
+    print(f"\033[32m### Model precision: {(precision * 100):.2f}% ####\033[0m")
 
-#--------Output
+def write_output(valid_feat, w):
 
     weights_dict = {
         "features": valid_feat,
-        "Gryffindor": Gryffindor_w.tolist(),
-        "Slytherin": Slytherin_w.tolist(),
-        "Ravenclaw": Ravenclaw_w.tolist(),
-        "Hufflepuff": Hufflepuff_w.tolist(),
+        "Gryffindor": w[HOUSES[0]].tolist(),
+        "Slytherin": w[HOUSES[1]].tolist(),
+        "Ravenclaw": w[HOUSES[2]].tolist(),
+        "Hufflepuff": w[HOUSES[3]].tolist(),
     }
 
-    print("\033[33m### Generate weights.json for predict ... ####\033[0m")
+    print("\033[33m### Successfully generated weights.json ####\033[0m")
 
     with open("weights.json", "w") as weights_file:
             json.dump(weights_dict, weights_file)
+
+
+def main():
+
+    args = parse_args()
+    dataset = load_csv(DATASET_PATH)
+    X, y, valid_feat = prepare_data(dataset, args)
+    sample_size = get_sample_size(args, X)
+    graph = init_graph(args)
+    w = start_training(valid_feat, X, y, sample_size, graph)
+    if graph:
+        graph.stop_interactive()
+    print_precision(X, y, w)
+    write_output(valid_feat, w)
+ 
 
 if __name__ == '__main__':
     main()
