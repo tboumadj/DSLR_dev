@@ -1,8 +1,8 @@
 import json
 
 import numpy as np
-from utils.load import is_numeric_column, load_csv, dataset_to_dataframe
-from utils.train import standardize_feat, extract_X_y
+from utils.load import is_numeric_column, load_csv, dataset_to_dataframe_train
+from utils.train import standardize_feat_train, extract_X_y
 import argparse
 
 EPOCHS = 150
@@ -62,11 +62,11 @@ def main():
         if is_numeric_column(vals) and col not in EXCLUDE
     ]
     
-    dataframe = dataset_to_dataframe(DATASET_PATH, valid_feat)
+    dataframe = dataset_to_dataframe_train(DATASET_PATH, valid_feat)
 
 #--------Standardisation
 
-    dataframe_stand, params = standardize_feat(dataframe, valid_feat)
+    dataframe_stand, params = standardize_feat_train(dataframe, valid_feat)
     X, y = extract_X_y(dataframe_stand, valid_feat)
 
 #--------Sample size
@@ -113,6 +113,7 @@ def main():
         "Slytherin": Slytherin_w.tolist(),
         "Ravenclaw": Ravenclaw_w.tolist(),
         "Hufflepuff": Hufflepuff_w.tolist(),
+        "Feat_Standard" : params,
     }
 
     print("\033[33m### Generate weights.json for predict ... ####\033[0m")
