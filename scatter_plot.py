@@ -1,4 +1,3 @@
-import sys
 from utils.load import load_csv, get_xy_house
 from utils.stats import print_graph_scatter
 

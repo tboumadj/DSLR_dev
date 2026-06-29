@@ -1,5 +1,5 @@
 import sys
-from utils.load import load_csv, is_numeric_column, dataset_to_dataframe
+from utils.load import load_csv, is_numeric_column, dataset_to_dataframe_train
 from utils.stats import print_graph_sns
 
 def main():
@@ -13,7 +13,7 @@ def main():
         col for col, vals in dataset.items()
         if is_numeric_column(vals) and col not in EXCLUDE
     ]
-    dataframe = dataset_to_dataframe(filepath, numeric_cols)
+    dataframe = dataset_to_dataframe_train(filepath, numeric_cols)
     print_graph_sns(dataframe, numeric_cols)
 
 if __name__ == '__main__':

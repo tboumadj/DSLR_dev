@@ -1,4 +1,3 @@
-import sys
 from utils.load import load_csv, get_hist_house, is_numeric_column
 from utils.stats import print_graph_hist
 
@@ -9,7 +8,7 @@ def main():
 
     feat = "Arithmancy"
 
-#----TEST-----
+#---------
     EXCLUDE      = ['Index']
     numeric_cols = [
         col for col, vals in dataset.items()
