@@ -75,7 +75,12 @@ def get_hist_house(filepath, dataset, feat):
 
 def dataset_to_dataframe_train(filepath, numeric_cols, keep_houses=True):
 
-    dataset = pd.read_csv(filepath)
+    try:
+        dataset = pd.read_csv(filepath)
+    except FileNotFoundError as e:
+        print(e)
+        exit(1)
+
     if keep_houses:
         cols_to_keep = numeric_cols + ['Hogwarts House']
     else:
@@ -88,7 +93,11 @@ def dataset_to_dataframe_train(filepath, numeric_cols, keep_houses=True):
     return result
 
 def dataset_to_dataframe_predict(filepath, numeric_cols, feat_standard, keep_houses=True):
-    dataset = pd.read_csv(filepath)
+    try:
+        dataset = pd.read_csv(filepath)
+    except FileNotFoundError as e:
+        print(e)
+        exit(1)
 
     if keep_houses:
         cols_to_keep = numeric_cols + ['Hogwarts House']

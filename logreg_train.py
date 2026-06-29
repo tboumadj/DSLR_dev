@@ -104,6 +104,7 @@ def parse_args():
     return (args)
 
 def prepare_data(dataset, args):
+
     valid_feat = [
         col for col, vals in dataset.items()
         if is_numeric_column(vals) and col not in EXCLUDE
@@ -123,6 +124,9 @@ def get_sample_size(args, X):
         if (args.batch_size == 1):
              print("mode: pure stochastic gradient descent")
              sample_size = 1
+        if (args.batch_size < 1 ) or (args.batch_size > len(X)):
+            print(f"Error: Invalid batch size. Must be an integer between 1 and {len(X)}.")
+            exit(1)
         else: 
              print(f"mode: mini batch descent gradient with {args.batch_size} samples")
              sample_size = args.batch_size
